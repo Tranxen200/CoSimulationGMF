@@ -17,7 +17,6 @@ public class FMU {
 
 	public FMU(String fmuFileName) throws IOException {
 		modelDescription = FMUFile.parseFMUFile(fmuFileName);
-
 		for (FMIScalarVariable fmiScalarVariable : modelDescription.modelVariables) {
 			variables.put(fmiScalarVariable.name, fmiScalarVariable);
 		}
@@ -35,6 +34,4 @@ public class FMU {
 			System.out.println(model1.modelVariables.get(i).causality);
 		}
 	}
-
-	
 }

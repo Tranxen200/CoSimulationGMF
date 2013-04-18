@@ -5,9 +5,12 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 class FMULabelProvider implements ITableLabelProvider {
+	
 	public Image getColumnImage(Object element, int columnIndex) {
 		return null;
 	}
+	
+	//Set up table content
 	public String getColumnText(Object element, int columnIndex) {
 		FMUVariable fmuVar = (FMUVariable) element;
 		switch (columnIndex) {
@@ -19,12 +22,9 @@ class FMULabelProvider implements ITableLabelProvider {
 			return fmuVar.getVariability();
 		case 3:
 			return fmuVar.getDesc();
-			
 		}
 		return "";
 	}
-
-
 
 	public void dispose() {
 	}
@@ -35,12 +35,9 @@ class FMULabelProvider implements ITableLabelProvider {
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
-		// TODO Auto-generated method stub
-
 	}
+	
 	@Override
 	public void removeListener(ILabelProviderListener listener) {
-		// TODO Auto-generated method stub
-
 	}
 }

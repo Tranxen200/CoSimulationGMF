@@ -14,6 +14,7 @@ public class FMUContentProvider {
 	private List<FMUVariable> outputList;
 	private FMIModelDescription modelDesc;
 
+	//Retrieve FMU file's variables
 	public void setLists(String FMUPath){
 		internalList = new ArrayList<FMUVariable>();
 		inputList = new ArrayList<FMUVariable>();
@@ -50,37 +51,35 @@ public class FMUContentProvider {
 							typestr,
 							variability,
 							description));
-				break;
+					break;
 				case "output":
 					outputList.add(new FMUVariable(modelDesc.modelVariables.get(i).name.toString(),
 							typestr,
 							variability,
 							description));
-				break;
+					break;
 				default:
 					internalList.add(new FMUVariable(modelDesc.modelVariables.get(i).name.toString(),
 							typestr,
 							variability,
 							description));
-				break;
+					break;
 				}
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public List<FMUVariable> getInputs(){
 		return this.inputList;
 	}
-	
+
 	public List<FMUVariable> getOutputs(){
 		return this.outputList;
 	}
-	
+
 	public List<FMUVariable> getInternals(){
 		return this.internalList;
 	}
-
 }

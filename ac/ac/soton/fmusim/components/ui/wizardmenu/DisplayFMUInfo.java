@@ -23,7 +23,6 @@ public class DisplayFMUInfo extends WizardPage
 	private CheckboxTableViewer checkboxTableViewer3;
 	private IPath sourceLocation;
 	private Composite container;
-	
 
 	public DisplayFMUInfo() {
 		super("selectStrings");
@@ -32,33 +31,32 @@ public class DisplayFMUInfo extends WizardPage
 	}
 
 	public void createControl(Composite parent) {
+		//Create the layout
 		this.container = new Composite(parent, SWT.NULL);
 		TableWrapLayout containerwrap = new TableWrapLayout();
 		container.setLayout(containerwrap);
 		setControl(container);
 
+		//Get Checkbox lists 
 		Label label1 = new Label(container, SWT.NONE);
 		label1.setText("Internals");
 		checkboxTableViewer = CheckboxTableViewer.newCheckList(container, SWT.BORDER);
 		checkboxTableViewer.setContentProvider(new ArrayContentProvider());
 		checkboxTableViewer.setLabelProvider(new FMULabelProvider());
-		
 		Label label2 = new Label(container, SWT.NONE);
 		label2.setText("Inputs");
 		checkboxTableViewer2 = CheckboxTableViewer.newCheckList(container, SWT.BORDER);
 		checkboxTableViewer2.setContentProvider(new ArrayContentProvider());
 		checkboxTableViewer2.setLabelProvider(new FMULabelProvider());
-		
 		Label label3 = new Label(container, SWT.NONE);
 		label3.setText("Outputs");
 		checkboxTableViewer3 = CheckboxTableViewer.newCheckList(container, SWT.BORDER);
 		checkboxTableViewer3.setContentProvider(new ArrayContentProvider());
 		checkboxTableViewer3.setLabelProvider(new FMULabelProvider());
-		
+
 		Table table = checkboxTableViewer.getTable();
 		Table table2 = checkboxTableViewer2.getTable();
 		Table table3 = checkboxTableViewer3.getTable();
-	    
 		table.setHeaderVisible(true);
 		table2.setHeaderVisible(true);
 		table3.setHeaderVisible(true);
@@ -80,7 +78,7 @@ public class DisplayFMUInfo extends WizardPage
 				new TableColumn(table, SWT.NONE);
 		tableColumn_3.setWidth(350);
 		tableColumn_3.setText("Description");
-		
+
 		//Setting inports variables' table columns
 		final TableColumn table2Column =
 				new TableColumn(table2, SWT.NONE);
@@ -98,7 +96,7 @@ public class DisplayFMUInfo extends WizardPage
 				new TableColumn(table2, SWT.NONE);
 		table2Column_3.setWidth(350);
 		table2Column_3.setText("Desciption");
-		
+
 		//Setting outports variables' table columns
 		final TableColumn table3Column =
 				new TableColumn(table3, SWT.NONE);
@@ -116,11 +114,11 @@ public class DisplayFMUInfo extends WizardPage
 				new TableColumn(table3, SWT.NONE);
 		table3Column_3.setWidth(350);
 		table3Column_3.setText("Description");
-		
 	}
 
+	//Displays lists
 	public void setVisible(boolean visible) {
-		if (visible) {
+		if (visible){
 			IPath location = ((SelectFilesWizardPage) this.getPreviousPage()).getSourceLocation();
 			sourceLocation = location;
 			FMUContentProvider fmuCP = new FMUContentProvider();
@@ -128,22 +126,22 @@ public class DisplayFMUInfo extends WizardPage
 			checkboxTableViewer.setInput(fmuCP.getInternals());
 			checkboxTableViewer2.setInput(fmuCP.getInputs());
 			checkboxTableViewer3.setInput(fmuCP.getOutputs());		
-			
 			TableWrapData data1 = new TableWrapData(TableWrapData.FILL_GRAB, TableWrapData.FILL_GRAB);
 			data1.maxHeight = 220;
-		    TableWrapData data2 = new TableWrapData(TableWrapData.FILL_GRAB, TableWrapData.FILL_GRAB);
-		    data2.maxHeight = 220;
-		    TableWrapData data3 = new TableWrapData(TableWrapData.FILL_GRAB, TableWrapData.FILL_GRAB);
-		    data3.maxHeight = 220;
-		    checkboxTableViewer.getTable().setLayoutData(data1);
-		    checkboxTableViewer2.getTable().setLayoutData(data2);
-		    checkboxTableViewer3.getTable().setLayoutData(data3);
-		    this.getShell().setSize(900, 700);
-		    container.layout();
+			TableWrapData data2 = new TableWrapData(TableWrapData.FILL_GRAB, TableWrapData.FILL_GRAB);
+			data2.maxHeight = 220;
+			TableWrapData data3 = new TableWrapData(TableWrapData.FILL_GRAB, TableWrapData.FILL_GRAB);
+			data3.maxHeight = 220;
+			checkboxTableViewer.getTable().setLayoutData(data1);
+			checkboxTableViewer2.getTable().setLayoutData(data2);
+			checkboxTableViewer3.getTable().setLayoutData(data3);
+			this.getShell().setSize(900, 700);
+			container.layout();
 		}
 		super.setVisible(visible);
 	}
 
+	//Retrieve checked boxes
 	public List<FMUVariable[]> getSelection() {
 		Object[] checked = checkboxTableViewer.getCheckedElements();
 		Object[] checked2 = checkboxTableViewer2.getCheckedElements();
