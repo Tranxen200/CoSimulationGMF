@@ -35,6 +35,7 @@ public class SelectFilesWizardPage extends WizardPage
       container.setLayout(gridLayout);
       setControl(container);
 
+      setPageComplete(false);
       final Label label = new Label(container, SWT.NONE);
       final GridData gridData = new GridData();
       gridData.horizontalSpan = 3;
@@ -75,12 +76,11 @@ public class SelectFilesWizardPage extends WizardPage
 	   setPageComplete(false);
 
 	   IPath sourceLoc = getSourceLocation();
-	   if (sourceLoc == null || !sourceLoc.toFile().exists()) {
+	   if (sourceLoc == null || !sourceLoc.toFile().exists() || !sourceLoc.toString().endsWith(".fmu")) {
 	      setMessage(null);
 	      setErrorMessage("Please select an existing FMU file");
 	      return;
 	   }
-
 	   setPageComplete(true);
 
 	   setMessage(null);
