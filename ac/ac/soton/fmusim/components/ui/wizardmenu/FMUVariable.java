@@ -1,6 +1,6 @@
 package ac.soton.fmusim.components.ui.wizardmenu;
 
-class FMUVariable {
+public class FMUVariable {
 
 	private String VarName;
 	private String VarDesc;

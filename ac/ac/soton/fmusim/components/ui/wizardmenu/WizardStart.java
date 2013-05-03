@@ -10,6 +10,7 @@ public class WizardStart extends Wizard implements INewWizard{
 
 	private SelectFilesWizardPage selectFilesPage;
 	private DisplayFMUInfo infoFMU;
+	private String filePath = "";
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
@@ -17,7 +18,7 @@ public class WizardStart extends Wizard implements INewWizard{
 
 
 	public void addPages(){
-		selectFilesPage = new SelectFilesWizardPage();
+		selectFilesPage = new SelectFilesWizardPage(filePath);
 		addPage(selectFilesPage);
 		infoFMU = new DisplayFMUInfo();
 		addPage(infoFMU);	
@@ -28,6 +29,10 @@ public class WizardStart extends Wizard implements INewWizard{
 		return false;
 	}
 
+	public void setFilePath(String filePath){
+		this.filePath = filePath;
+	}
+	
 	public IPath getSourceLocation() {
 		return null;
 	}

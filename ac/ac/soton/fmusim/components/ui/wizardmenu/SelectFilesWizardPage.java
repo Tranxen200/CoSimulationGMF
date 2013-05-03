@@ -20,12 +20,14 @@ import org.eclipse.swt.widgets.Text;
 public class SelectFilesWizardPage extends WizardPage
 {
 	private Text sourceFileField;
+	private String filePath;
 
-	public SelectFilesWizardPage() {
+	public SelectFilesWizardPage(String filePath) {
 		super("selectFiles");
 		setTitle("Select file");
 		setDescription(
 				"Select the FMU file");
+		this.filePath = filePath;
 	}
 
 	public void createControl(Composite parent) {
@@ -53,6 +55,7 @@ public class SelectFilesWizardPage extends WizardPage
 				updatePageComplete();
 			}
 		});
+		if(this.filePath != ""){this.sourceFileField.setText(filePath);}
 		sourceFileField.setLayoutData(
 				new GridData(GridData.FILL_HORIZONTAL));
 		final Button button = new Button(container, SWT.NONE);
@@ -80,6 +83,7 @@ public class SelectFilesWizardPage extends WizardPage
 		setMessage(null);
 		setErrorMessage(null);
 	}
+	
 
 	protected void browseForSourceFile() {
 		IPath path = browse(getSourceLocation(), false);

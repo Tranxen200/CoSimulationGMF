@@ -1,17 +1,23 @@
 package ac.soton.fmusim.components.ui.wizardmenu;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
-import org.eclipse.core.runtime.IPath;
+import javax.swing.text.TableView.TableRow;
+
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
@@ -21,11 +27,18 @@ public class DisplayFMUInfo extends WizardPage
 	private CheckboxTableViewer checkboxTableViewer;
 	private CheckboxTableViewer checkboxTableViewer2;
 	private CheckboxTableViewer checkboxTableViewer3;
-	private IPath sourceLocation;
+	private String sourceLocation = "";
 	private Composite container;
 
 	public DisplayFMUInfo() {
 		super("selectStrings");
+		setTitle("Extract");
+		setDescription("Select the variables to be imported");
+	}
+
+	public DisplayFMUInfo(String source) {
+		super("selectStrings");
+		this.sourceLocation = source;
 		setTitle("Extract");
 		setDescription("Select the variables to be imported");
 	}
@@ -54,7 +67,7 @@ public class DisplayFMUInfo extends WizardPage
 		checkboxTableViewer3.setContentProvider(new ArrayContentProvider());
 		checkboxTableViewer3.setLabelProvider(new FMULabelProvider());
 
-		Table table = checkboxTableViewer.getTable();
+		final Table table = checkboxTableViewer.getTable();
 		Table table2 = checkboxTableViewer2.getTable();
 		Table table3 = checkboxTableViewer3.getTable();
 		table.setHeaderVisible(true);
@@ -79,6 +92,36 @@ public class DisplayFMUInfo extends WizardPage
 		tableColumn_3.setWidth(350);
 		tableColumn_3.setText("Description");
 
+		/*
+		Listener sortListener = new Listener() {
+	        public void handleEvent(Event e) {
+	            TableItem[] items = table.getItems();
+	            Collator collator = Collator.getInstance(Locale.getDefault());
+	            TableColumn column = (TableColumn)e.widget;
+	            int index = column == tableColumn ? 0 : 3;
+	            for (int i = 1; i < items.length; i++) {
+	                String value1 = items[i].getText(index);
+	                for (int j = 0; j < i; j++){
+	                    String value2 = items[j].getText(index);
+	                    if (collator.compare(value1, value2) < 0) {
+	                        String[] values = {items[i].getText(0), items[i].getText(1)};
+	                        items[i].dispose();
+	                        TableItem item = new TableItem(table, SWT.NONE, j);
+	                        item.setText(values);
+	                        items = table.getItems();
+	                        break;
+	                    }
+	                }
+	            }
+	            table.setSortColumn(column);
+	        }
+	    };
+	    tableColumn.addListener(SWT.Selection, sortListener);
+	    tableColumn_1.addListener(SWT.Selection, sortListener);
+	    tableColumn_2.addListener(SWT.Selection, sortListener);
+	    tableColumn_3.addListener(SWT.Selection, sortListener);
+		 */
+
 		//Setting inports variables' table columns
 		final TableColumn table2Column =
 				new TableColumn(table2, SWT.NONE);
@@ -95,7 +138,7 @@ public class DisplayFMUInfo extends WizardPage
 		final TableColumn table2Column_3 =
 				new TableColumn(table2, SWT.NONE);
 		table2Column_3.setWidth(350);
-		table2Column_3.setText("Desciption");
+		table2Column_3.setText("Description");
 
 		//Setting outports variables' table columns
 		final TableColumn table3Column =
@@ -114,13 +157,16 @@ public class DisplayFMUInfo extends WizardPage
 				new TableColumn(table3, SWT.NONE);
 		table3Column_3.setWidth(350);
 		table3Column_3.setText("Description");
+
 	}
 
 	//Displays lists
 	public void setVisible(boolean visible) {
 		if (visible){
-			IPath location = ((SelectFilesWizardPage) this.getPreviousPage()).getSourceLocation();
-			sourceLocation = location;
+			if(this.sourceLocation == ""){
+				String location = ((SelectFilesWizardPage) this.getPreviousPage()).getSourceLocation().toString();
+				sourceLocation = location;
+			}
 			FMUContentProvider fmuCP = new FMUContentProvider();
 			fmuCP.setLists(sourceLocation.toString());
 			checkboxTableViewer.setInput(fmuCP.getInternals());
@@ -135,11 +181,12 @@ public class DisplayFMUInfo extends WizardPage
 			checkboxTableViewer.getTable().setLayoutData(data1);
 			checkboxTableViewer2.getTable().setLayoutData(data2);
 			checkboxTableViewer3.getTable().setLayoutData(data3);
+
 			this.getShell().setSize(900, 700);
 			container.layout();
 		}
 		super.setVisible(visible);
-	}
+	}	
 
 	//Retrieve checked boxes
 	public List<FMUVariable[]> getSelection() {
@@ -161,6 +208,14 @@ public class DisplayFMUInfo extends WizardPage
 		checkedLists.add(extracted3);
 		return checkedLists;
 	}
-
+	
+	//Check boxes
+	public void setSelection(List<FMUVariable[]> checklist){
+		checkboxTableViewer.setCheckedElements(checklist.get(0));
+		checkboxTableViewer2.setCheckedElements(checklist.get(1));
+		checkboxTableViewer3.setCheckedElements(checklist.get(2));
+	}
+	
+	
 }
 
