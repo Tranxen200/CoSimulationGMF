@@ -29,6 +29,7 @@ public class DisplayFMUInfo extends WizardPage
 	private CheckboxTableViewer checkboxTableViewer3;
 	private String sourceLocation = "";
 	private Composite container;
+	private List<FMUVariable[]> checker;
 
 	public DisplayFMUInfo() {
 		super("selectStrings");
@@ -181,7 +182,32 @@ public class DisplayFMUInfo extends WizardPage
 			checkboxTableViewer.getTable().setLayoutData(data1);
 			checkboxTableViewer2.getTable().setLayoutData(data2);
 			checkboxTableViewer3.getTable().setLayoutData(data3);
-
+			
+			if(this.checker != null){
+				for(int i =0;i<checker.get(0).length;i++){
+					for(int j=0;j<checkboxTableViewer.getTable().getItems().length;j++){
+						if(checkboxTableViewer.getTable().getItem(j).getText().contains(checker.get(0)[i].getName())){
+							checkboxTableViewer.setChecked(checkboxTableViewer.getTable().getItem(j).getData(), true);
+						}
+					}
+				}
+				for(int i =0;i<checker.get(1).length;i++){
+					for(int j=0;j<checkboxTableViewer2.getTable().getItems().length;j++){
+						if(checkboxTableViewer2.getTable().getItem(j).getText().contains(checker.get(1)[i].getName())){
+							checkboxTableViewer2.setChecked(checkboxTableViewer2.getTable().getItem(j).getData(), true);
+						}
+					}
+				}
+				for(int i =0;i<checker.get(2).length;i++){
+					for(int j=0;j<checkboxTableViewer3.getTable().getItems().length;j++){
+						if(checkboxTableViewer3.getTable().getItem(j).getText().contains(checker.get(2)[i].getName())){
+							checkboxTableViewer3.setChecked(checkboxTableViewer3.getTable().getItem(j).getData(), true);
+						}
+					}
+				}
+			}
+			
+			
 			this.getShell().setSize(900, 700);
 			container.layout();
 		}
@@ -215,6 +241,11 @@ public class DisplayFMUInfo extends WizardPage
 		checkboxTableViewer2.setCheckedElements(checklist.get(1));
 		checkboxTableViewer3.setCheckedElements(checklist.get(2));
 	}
+	
+	public void setChecker(List<FMUVariable[]> checklist){
+		this.checker = checklist;
+	}
+	
 	
 	
 }
